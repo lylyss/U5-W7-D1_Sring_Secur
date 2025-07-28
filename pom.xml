@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dangelodavide</groupId>
-    <artifactId>U5-W7-D1_Spring-Secure</artifactId>
+    <artifactId>U5-W7-D1_Spring_Secure</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>U5-W7-D1_Spring_Secure</name>
     <description>friday exercise</description>
@@ -92,6 +92,11 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.12.6</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.39.0</version>
         </dependency>
     </dependencies>
 
