@@ -1,5 +1,7 @@
 package lobodanicolae.U5_W7_D1_Spring_Secure.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lobodanicolae.U5_W7_D1_Spring_Secure.entities.Dipendente;
 import lobodanicolae.U5_W7_D1_Spring_Secure.exceptions.BadRequestException;
 import lobodanicolae.U5_W7_D1_Spring_Secure.exceptions.ResourceNotFoundException;
@@ -7,6 +9,7 @@ import lobodanicolae.U5_W7_D1_Spring_Secure.repository.DipendenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +17,8 @@ import java.util.UUID;
 @Service
 public class DipendenteService {
     private final DipendenteRepository repository;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Autowired
     public DipendenteService(DipendenteRepository repository) {
@@ -47,5 +52,16 @@ public class DipendenteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Dipendente con email " + email + " non trovato."));
     }
 
-
+    public String uploadAvatar(UUID id, MultipartFile file) {
+        Dipendente dipendente = findById(id);
+        try {
+            var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String url = uploadResult.get("secure_url").toString();
+            dipendente.setImmagineProfiloPath(url);
+            repository.save(dipendente);
+            return url;
+        } catch (Exception e) {
+            throw new BadRequestException("Errore durante l'upload dell'immagine: " + e.getMessage());
+        }
+    }
 }
