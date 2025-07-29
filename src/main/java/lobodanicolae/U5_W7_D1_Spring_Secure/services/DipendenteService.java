@@ -8,6 +8,7 @@ import lobodanicolae.U5_W7_D1_Spring_Secure.exceptions.ResourceNotFoundException
 import lobodanicolae.U5_W7_D1_Spring_Secure.repository.DipendenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,5 +64,10 @@ public class DipendenteService {
         } catch (Exception e) {
             throw new BadRequestException("Errore durante l'upload dell'immagine: " + e.getMessage());
         }
+    }
+
+    public Dipendente getLoggedDipendente() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findByEmail(email);
     }
 }

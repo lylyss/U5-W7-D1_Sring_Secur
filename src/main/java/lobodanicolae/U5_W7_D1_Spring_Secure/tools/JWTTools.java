@@ -5,9 +5,11 @@ import io.jsonwebtoken.security.Keys;
 import lobodanicolae.U5_W7_D1_Spring_Secure.entities.Dipendente;
 import lobodanicolae.U5_W7_D1_Spring_Secure.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class JWTTools {
     @Value("${jwt.secret}")
     private String secret;

@@ -1,6 +1,7 @@
 package lobodanicolae.U5_W7_D1_Spring_Secure.controller;
 
 import lobodanicolae.U5_W7_D1_Spring_Secure.Payloads.LoginDTO;
+import lobodanicolae.U5_W7_D1_Spring_Secure.exceptions.UnauthorizedException;
 import lobodanicolae.U5_W7_D1_Spring_Secure.services.AuthService;
 import lobodanicolae.U5_W7_D1_Spring_Secure.services.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AuthController {
     @PostMapping("/login")
     public LoginDTO login(@RequestBody LoginDTO body) {
         String accessToken = authService.checkCredentialsAndGenerateToken(body);
-        return new LoginDTO(accessToken);
+        if (accessToken == null) {
+            throw new UnauthorizedException("Credenziali non valide");
+        }
+        return new LoginDTO(dipendenteService.getLoggedDipendente().getEmail(), accessToken);
     }
 }
